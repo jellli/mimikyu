@@ -1,0 +1,24 @@
+{
+  "name": "mimikyu",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/cli.js",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "dev": "ts-node ./cli.ts",
+    "build": "swc ./cli.ts -o ./dist/cli.js",
+    "mimi": "node ./dist/cli.js"
+  },
+  "keywords": [],
+  "author": "Jellli",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/cli": "^0.3.10",
+    "@swc/core": "^1.4.8",
+    "@types/node": "^20.11.28",
+    "commander": "^12.0.0",
+    "rollup": "^4.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
