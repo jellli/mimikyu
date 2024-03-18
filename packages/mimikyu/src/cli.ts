@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
 import { Command } from 'commander';
@@ -10,17 +11,18 @@ const cli = new Command();
 cli.name('mimi').version(version);
 
 cli
+  .argument('[files...]', 'files')
   .option('-e, --entries <files...>', 'Entries of files')
   .option('-f, --format <format>', 'Bundle format')
   .option('--debug', 'output extra debugging')
-  .action(async (opts) => {
-    if (opts.debug) console.log(opts);
+  .action(async (files, opts) => {
+    if (opts.debug) console.log({ files, opts });
 
-    if (opts.entries) {
+    if (Array.isArray(files)) {
       const { rollup } = await import('rollup');
       const { default: swc } = await import('@rollup/plugin-swc');
       const bundle = await rollup({
-        input: opts.entries,
+        input: files,
         plugins: [swc()]
       })
       await bundle.write({
