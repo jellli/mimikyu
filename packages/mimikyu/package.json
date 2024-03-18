@@ -5,14 +5,15 @@
   "main": "./dist/cli.js",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "dev": "ts-node ./cli.ts",
-    "build": "swc ./cli.ts -o ./dist/cli.js",
+    "dev": "ts-node --swc ./src/cli.ts",
+    "build": "swc ./src/cli.ts -o ./dist/cli.js",
     "mimi": "node ./dist/cli.js"
   },
   "keywords": [],
   "author": "Jellli",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-swc": "^0.3.0",
     "@swc/cli": "^0.3.10",
     "@swc/core": "^1.4.8",
     "@types/node": "^20.11.28",
