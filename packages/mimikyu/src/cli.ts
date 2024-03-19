@@ -20,10 +20,17 @@ cli
 
     if (Array.isArray(files)) {
       const { rollup } = await import('rollup');
-      const { default: swc } = await import('@rollup/plugin-swc');
+      const { default: swcPlugin } = await import('@rollup/plugin-swc');
+      const { default: nodeResolvePlugin } = await import('@rollup/plugin-node-resolve');
+      const { default: commonjsPlugin } = await import('@rollup/plugin-commonjs');
+
       const bundle = await rollup({
         input: files,
-        plugins: [swc()]
+        plugins: [
+          nodeResolvePlugin(),
+          commonjsPlugin(),
+          swcPlugin(),
+        ]
       })
       await bundle.write({
         dir: 'dist',
