@@ -1,6 +1,6 @@
 {
   "name": "mimikyu",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "./dist/cli.js",
   "bin": {
@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "dev": "swc ./src/cli.ts -o ./dist/cli.js -w",
-    "build": "swc ./src/cli.ts -o ./dist/cli.js"
+    "build": "swc ./src/cli.ts -o ./dist/cli.js",
+    "prepublishOnly": "pnpm clean && pnpm build && chmod +x ./dist/cli.js"
   },
   "keywords": [],
   "author": "Jellli",
