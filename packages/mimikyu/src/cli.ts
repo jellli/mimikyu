@@ -1,12 +1,11 @@
 #!/usr/bin/env node
-import fs from "node:fs";
-import path from "node:path";
 import { Command } from "commander";
-
-const pkgValues = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"),
-);
-const { version } = pkgValues;
+import { rollup } from "rollup";
+import commonjs from "@rollup/plugin-commonjs";
+import json from "@rollup/plugin-json";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import { swc } from "rollup-plugin-swc3";
+import { version } from "../package.json";
 
 const cli = new Command();
 
@@ -30,20 +29,33 @@ cli
   .action(async (files, opts) => {
     if (opts.debug) console.log({ files, opts });
 
-    if (Array.isArray(files)) {
-      const { rollup } = await import("rollup");
-      const { default: swcPlugin } = await import("@rollup/plugin-swc");
-      const { default: nodeResolvePlugin } = await import(
-        "@rollup/plugin-node-resolve"
-      );
-      const { default: commonjsPlugin } = await import(
-        "@rollup/plugin-commonjs"
-      );
-
+    if (Array.isArray(opts.entries) || Array.isArray(files)) {
       console.time("bundle done in");
       const bundle = await rollup({
-        input: files,
-        plugins: [nodeResolvePlugin(), commonjsPlugin(), swcPlugin()],
+        input: opts.entries || files,
+        plugins: [
+          nodeResolve({
+            preferBuiltins: true,
+            extensions: [
+              ".mjs",
+              ".cjs",
+              ".js",
+              "ts",
+              ".json",
+              ".node",
+              ".jsx",
+              "tsx",
+            ],
+          }),
+          json(),
+          swc({
+            exclude: "node_modules",
+            jsc: {
+              baseUrl: __dirname,
+            },
+          }),
+          commonjs(),
+        ],
         // treeshake: true
       });
       await bundle.write({

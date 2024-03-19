@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "dev": "swc ./src/cli.ts -o ./dist/cli.js -w",
-    "build": "swc ./src/cli.ts -o ./dist/cli.js",
+    "build": "node -r @swc-node/register ./src/cli.ts -e ./src/cli.ts",
     "prepublishOnly": "pnpm clean && pnpm build && chmod +x ./dist/cli.js"
   },
   "keywords": [],
@@ -17,8 +17,9 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-swc": "^0.3.0",
+    "@swc-node/register": "^1.9.0",
     "@swc/cli": "^0.3.10",
     "@swc/core": "^1.4.8",
     "@types/node": "^20.11.28",
@@ -26,6 +27,7 @@
     "commander": "^12.0.0",
     "mimikyu": "*",
     "rollup": "^4.13.0",
+    "rollup-plugin-swc3": "^0.11.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   }
